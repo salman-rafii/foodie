@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:foodie/screens/login_page.dart';
 import 'package:foodie/screens/my_home_page.dart';
+
+import 'screens/details_recipie.dart';
 
 void main() {
   runApp(MyApp());
@@ -16,7 +19,8 @@ class MyApp extends StatelessWidget {
 
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(),
+      home: LoginPage(),
+      //MyHomePage(),
     );
   }
 }
