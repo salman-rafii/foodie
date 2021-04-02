@@ -4,6 +4,8 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'details_recipie.dart';
+
 class CategoryRecipie extends StatefulWidget {
   String type;
   CategoryRecipie(this.type);
@@ -39,6 +41,10 @@ class _CategoryRecipieState extends State<CategoryRecipie> {
     print('setting value to sharedprefrrenece');
     _pref.setStringList('favrt', favt);
     print('values has been set');
+
+    setState(() {
+      getAllFvrt();
+    });
   }
 
   List<dynamic> fvrtlist = [];
@@ -63,7 +69,7 @@ class _CategoryRecipieState extends State<CategoryRecipie> {
     var client = http.Client();
     try {
       var response = await client.get(Uri.parse(
-          'https://api.spoonacular.com/recipes/complexSearch?type=${widget.type}&apiKey=5c070f1c48754e09aed8dc3a5c38c6a5'));
+          'https://api.spoonacular.com/recipes/complexSearch?type=${widget.type}&apiKey=cc487902683c4f9fb86a7c2295a4880d'));
       print('Status Code is : ${response.statusCode}');
       if (response.statusCode == 200) {
         print('Entered in Status 200');
@@ -77,7 +83,6 @@ class _CategoryRecipieState extends State<CategoryRecipie> {
         print(popular_recipie[0]['title']);
       } else {
         print('Satus Code of TrendingMovies is Not 200');
-        // MovieResponse.withError('Error in WithError');
       }
     } catch (Expception) {
       print('Exception of Error in getting PopularFood Data....See Below');
@@ -100,78 +105,13 @@ class _CategoryRecipieState extends State<CategoryRecipie> {
               ),
             ),
           ),
-          title: Container(
-            width: MediaQuery.of(context).size.width * 0.9,
-            height: 50,
-            child: TextField(
-              decoration: InputDecoration(
-                  hintText: 'Search Here',
-                  enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10.0))),
-            ),
+          title: Text(
+            'Foodie App',
+            style: TextStyle(
+                color: Colors.red, fontSize: 30, fontWeight: FontWeight.bold),
           ),
           centerTitle: true,
-          actions: [
-            Icon(
-              Icons.search,
-              color: Colors.black,
-            ),
-            SizedBox(
-              width: 15,
-            )
-          ],
           backgroundColor: Colors.white,
-        ),
-        bottomNavigationBar: Container(
-          color: Colors.white,
-          height: 70,
-          child: Row(
-            children: [
-              SizedBox(
-                width: 20,
-              ),
-              Icon(
-                Icons.home,
-                size: 40,
-                color: Colors.red,
-              ),
-              SizedBox(
-                width: 40,
-              ),
-              Icon(
-                Icons.favorite,
-                size: 40,
-                color: Colors.red,
-              ),
-              SizedBox(
-                width: 140,
-              ),
-              Icon(
-                Icons.notifications,
-                size: 40,
-                color: Colors.red,
-              ),
-              SizedBox(
-                width: 40,
-              ),
-              Icon(
-                Icons.person,
-                size: 40,
-                color: Colors.red,
-              ),
-            ],
-          ),
-        ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        floatingActionButton: FloatingActionButton(
-          elevation: 5,
-          backgroundColor: Colors.white,
-          child: Icon(
-            Icons.shopping_cart_rounded,
-            size: 40,
-            color: Colors.black45,
-          ),
-          onPressed: null,
         ),
         body: Container(
             height: MediaQuery.of(context).size.height,
@@ -193,7 +133,7 @@ class _CategoryRecipieState extends State<CategoryRecipie> {
                           Expanded(
                             flex: 5,
                             child: Text(
-                              'Popular Recipies Are Here',
+                              widget.type.toUpperCase(),
                               style: TextStyle(
                                   fontSize: 27,
                                   fontWeight: FontWeight.bold,
@@ -220,14 +160,27 @@ class _CategoryRecipieState extends State<CategoryRecipie> {
                                 Positioned(
                                   bottom: 100,
                                   left: 100,
-                                  child: RaisedButton(
-                                    onPressed: null,
-                                    child: Text(
-                                      'See Details',
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold),
-                                    ),
+                                  child: FlatButton(
+                                    onPressed: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) => DetialsPage(
+                                                  e['id'].toString())));
+                                    },
+                                    child: Text('See Details',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white,
+                                            fontSize: 20)),
+                                    textColor: Colors.white,
+                                    shape: RoundedRectangleBorder(
+                                        side: BorderSide(
+                                            color: Colors.white,
+                                            width: 3,
+                                            style: BorderStyle.solid),
+                                        borderRadius:
+                                            BorderRadius.circular(50)),
                                   ),
                                 ),
                                 Positioned(
@@ -249,6 +202,7 @@ class _CategoryRecipieState extends State<CategoryRecipie> {
                                           print('clicked favrt button');
                                           print(e['id']);
                                           markFav(e['id'].toString());
+                                          setState(() {});
                                         })),
                                 Positioned(
                                   bottom: 0,

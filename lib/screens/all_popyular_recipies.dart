@@ -3,6 +3,8 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'details_recipie.dart';
+
 class AllRecipiesWidget extends StatefulWidget {
   @override
   _AllRecipiesWidgetState createState() => _AllRecipiesWidgetState();
@@ -59,7 +61,7 @@ class _AllRecipiesWidgetState extends State<AllRecipiesWidget> {
     var client = http.Client();
     try {
       var response = await client.get(Uri.parse(
-          'https://api.spoonacular.com/recipes/complexSearch?apiKey=5c070f1c48754e09aed8dc3a5c38c6a5'));
+          'https://api.spoonacular.com/recipes/complexSearch?apiKey=cc487902683c4f9fb86a7c2295a4880d'));
       print('Status Code is : ${response.statusCode}');
       if (response.statusCode == 200) {
         print('Entered in Status 200');
@@ -96,79 +98,84 @@ class _AllRecipiesWidgetState extends State<AllRecipiesWidget> {
               ),
             ),
           ),
-          title: Container(
-            width: MediaQuery.of(context).size.width * 0.9,
-            height: 50,
-            child: TextField(
-              decoration: InputDecoration(
-                  hintText: 'Search Here',
-                  enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10.0))),
-            ),
+          title: Text(
+            'Foodie App',
+            style: TextStyle(
+                color: Colors.red, fontSize: 30, fontWeight: FontWeight.bold),
           ),
+          // Container(
+          //   width: MediaQuery.of(context).size.width * 0.9,
+          //   height: 50,
+          //   child: TextField(
+          //     decoration: InputDecoration(
+          //         hintText: 'Search Here',
+          //         enabledBorder: OutlineInputBorder(
+          //             borderRadius: BorderRadius.circular(10.0))),
+          //   ),
+          // ),
           centerTitle: true,
-          actions: [
-            Icon(
-              Icons.search,
-              color: Colors.black,
-            ),
-            SizedBox(
-              width: 15,
-            )
-          ],
+          // actions: [
+          //   Icon(
+          //     Icons.search,
+          //     color: Colors.black,
+          //   ),
+          //   SizedBox(
+          //     width: 15,
+          //   )
+          // ],
           backgroundColor: Colors.white,
         ),
-        bottomNavigationBar: Container(
-          color: Colors.white,
-          height: 70,
-          child: Row(
-            children: [
-              SizedBox(
-                width: 20,
-              ),
-              Icon(
-                Icons.home,
-                size: 40,
-                color: Colors.red,
-              ),
-              SizedBox(
-                width: 40,
-              ),
-              Icon(
-                Icons.favorite,
-                size: 40,
-                color: Colors.red,
-              ),
-              SizedBox(
-                width: 140,
-              ),
-              Icon(
-                Icons.notifications,
-                size: 40,
-                color: Colors.red,
-              ),
-              SizedBox(
-                width: 40,
-              ),
-              Icon(
-                Icons.person,
-                size: 40,
-                color: Colors.red,
-              ),
-            ],
-          ),
-        ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        floatingActionButton: FloatingActionButton(
-          elevation: 5,
-          backgroundColor: Colors.white,
-          child: Icon(
-            Icons.shopping_cart_rounded,
-            size: 40,
-            color: Colors.black45,
-          ),
-          onPressed: null,
-        ),
+        // bottomNavigationBar: Container(
+        //   color: Colors.white,
+        //   height: 70,
+        //   child: Row(
+        //     children: [
+        //       SizedBox(
+        //         width: 20,
+        //       ),
+        //       Icon(
+        //         Icons.home,
+        //         size: 40,
+        //         color: Colors.red,
+        //       ),
+        //       SizedBox(
+        //         width: 40,
+        //       ),
+        //       Icon(
+        //         Icons.favorite,
+        //         size: 40,
+        //         color: Colors.red,
+        //       ),
+        //       SizedBox(
+        //         width: 140,
+        //       ),
+        //       Icon(
+        //         Icons.notifications,
+        //         size: 40,
+        //         color: Colors.red,
+        //       ),
+        //       SizedBox(
+        //         width: 40,
+        //       ),
+        //       Icon(
+        //         Icons.person,
+        //         size: 40,
+        //         color: Colors.red,
+        //       ),
+        //     ],
+        //   ),
+        // ),
+        // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        // floatingActionButton: FloatingActionButton(
+        //   elevation: 5,
+        //   backgroundColor: Colors.white,
+        //   child: Icon(
+        //     Icons.shopping_cart_rounded,
+        //     size: 40,
+        //     color: Colors.black45,
+        //   ),
+        //   onPressed: null,
+        // ),
         body: Container(
             height: MediaQuery.of(context).size.height,
             width: MediaQuery.of(context).size.width,
@@ -216,14 +223,27 @@ class _AllRecipiesWidgetState extends State<AllRecipiesWidget> {
                                 Positioned(
                                   bottom: 100,
                                   left: 100,
-                                  child: RaisedButton(
-                                    onPressed: null,
-                                    child: Text(
-                                      'See Details',
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold),
-                                    ),
+                                  child: FlatButton(
+                                    onPressed: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) => DetialsPage(
+                                                  e['id'].toString())));
+                                    },
+                                    child: Text('See Details',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white,
+                                            fontSize: 20)),
+                                    textColor: Colors.white,
+                                    shape: RoundedRectangleBorder(
+                                        side: BorderSide(
+                                            color: Colors.white,
+                                            width: 3,
+                                            style: BorderStyle.solid),
+                                        borderRadius:
+                                            BorderRadius.circular(50)),
                                   ),
                                 ),
                                 Positioned(

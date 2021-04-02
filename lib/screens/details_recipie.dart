@@ -3,6 +3,12 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import 'package:motion_tab_bar/MotionTabController.dart';
+import 'package:motion_tab_bar/motiontabbar.dart';
+
+import 'favourite.dart';
+import 'my_home_page.dart';
+
 class DetialsPage extends StatefulWidget {
   String index;
   DetialsPage(this.index);
@@ -10,20 +16,23 @@ class DetialsPage extends StatefulWidget {
   _DetialsPageState createState() => _DetialsPageState();
 }
 
-class _DetialsPageState extends State<DetialsPage> {
+class _DetialsPageState extends State<DetialsPage>
+    with TickerProviderStateMixin {
   @override
   void initState() {
     getRecipieSearch(widget.index);
+    _tabController = new MotionTabController(initialIndex: 1, vsync: this);
     super.initState();
   }
 
+  MotionTabController _tabController;
   var ing = [];
   Map<String, dynamic> data;
   void getRecipieSearch(String index) async {
     var client = http.Client();
     try {
       var response = await client.get(Uri.parse(
-          'https://api.spoonacular.com/recipes/${index}/information?apiKey=5c070f1c48754e09aed8dc3a5c38c6a5'));
+          'https://api.spoonacular.com/recipes/${index}/information?apiKey=cc487902683c4f9fb86a7c2295a4880d'));
       print('Status Code is : ${response.statusCode}');
       if (response.statusCode == 200) {
         print('Entered in Status 200');
@@ -61,78 +70,13 @@ class _DetialsPageState extends State<DetialsPage> {
             ),
           ),
         ),
-        title: Container(
-          width: MediaQuery.of(context).size.width * 0.9,
-          height: 50,
-          child: TextField(
-            decoration: InputDecoration(
-                hintText: 'Search Here',
-                enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10.0))),
-          ),
+        title: Text(
+          'View Details',
+          style: TextStyle(
+              color: Colors.red, fontSize: 30, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
-        actions: [
-          Icon(
-            Icons.search,
-            color: Colors.black,
-          ),
-          SizedBox(
-            width: 15,
-          )
-        ],
         backgroundColor: Colors.white,
-      ),
-      bottomNavigationBar: Container(
-        color: Colors.white,
-        height: 70,
-        child: Row(
-          children: [
-            SizedBox(
-              width: 20,
-            ),
-            Icon(
-              Icons.home,
-              size: 40,
-              color: Colors.red,
-            ),
-            SizedBox(
-              width: 40,
-            ),
-            Icon(
-              Icons.favorite,
-              size: 40,
-              color: Colors.red,
-            ),
-            SizedBox(
-              width: 140,
-            ),
-            Icon(
-              Icons.notifications,
-              size: 40,
-              color: Colors.red,
-            ),
-            SizedBox(
-              width: 40,
-            ),
-            Icon(
-              Icons.person,
-              size: 40,
-              color: Colors.red,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: FloatingActionButton(
-        elevation: 5,
-        backgroundColor: Colors.white,
-        child: Icon(
-          Icons.shopping_cart_rounded,
-          size: 40,
-          color: Colors.black45,
-        ),
-        onPressed: null,
       ),
       body: SingleChildScrollView(
         child: data == null
@@ -150,7 +94,9 @@ class _DetialsPageState extends State<DetialsPage> {
                     child: Text(
                       data['title'].toString(),
                       style: TextStyle(
-                          color: Colors.red, fontWeight: FontWeight.bold),
+                          color: Colors.red,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20),
                     ),
                   ),
                   Card(
